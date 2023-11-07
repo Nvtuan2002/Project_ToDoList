@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: linear-gradient(to right, #8360c3, #2ebf91);
+  min-height: 100vh;
+}
+
+.App Button {
+  float: right;
+  margin: 10px;
+}
+
+.Home {
+  min-height: 90vh;
+  clear: both;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
