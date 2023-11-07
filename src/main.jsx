@@ -18,7 +18,7 @@ import DetailTask from './components/DetailTask.jsx'
 
 const router = createBrowserRouter([
   {
-    path: "/ProjectDoList",
+    path: "/Project_ToDoList",
     element: <App></App>,
   },
   {

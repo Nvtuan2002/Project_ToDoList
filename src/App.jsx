@@ -24,7 +24,7 @@ function App() {
 
   return (<>
     <h1 onClick={() => {
-      navigate('/')
+      navigate('/Project_ToDoList')
     }} role="button" style={{ fontFamily: 'sans-serif', float: 'left' }}>DEMO CRUD</h1>
     {!token ? noToken : logOut}
 
