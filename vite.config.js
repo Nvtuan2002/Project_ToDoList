@@ -5,4 +5,5 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: '/Project_ToDoList/',
   plugins: [react()],
+  build: { chunkSizeWarningLimit: 1600, }
 })
