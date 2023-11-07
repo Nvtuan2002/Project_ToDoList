@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://Nvtuan2002.github.io/Project_ToDoList/",
+  "homepage": "https://Nvtuan2002.github.io/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
