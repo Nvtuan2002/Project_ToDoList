@@ -51,7 +51,7 @@ function Register() {
     return (
         <>
             <h1 onClick={() => {
-                navigate('/')
+                navigate('/ProjectDoList')
             }} role="button" style={{ fontFamily: 'sans-serif' }}>DEMO CRUD</h1>
             <div className="login">
                 <div className="register-form">
