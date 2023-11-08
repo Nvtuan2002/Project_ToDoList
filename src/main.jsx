@@ -18,7 +18,7 @@ import DetailTask from './components/DetailTask.jsx'
 
 const router = createBrowserRouter([
   {
-    path: "/Project_ToDoList",
+    path: "/",
     element: <App></App>,
   },
   {
@@ -55,3 +55,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <RouterProvider router={router} />
   </React.StrictMode>,
 )
+
+// Check box  -- DONE --
+// disabled button update tittle -- DONE --
+// gÕ search thì hiển thị ra luôn ko cần nhấn nút tìm kiếm (lưu ý: dùng debounce) --DONE --
+// 

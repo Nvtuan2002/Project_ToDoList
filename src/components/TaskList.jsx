@@ -2,8 +2,8 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { Avatar, List, Input, Button, Dropdown, Form } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-
 import { useNavigate } from "react-router-dom";
+import debounce from 'lodash/debounce';
 
 
 function TaskList() {
@@ -17,10 +17,6 @@ function TaskList() {
         })
             .then((res) => {
                 setCV(res.data.data);
-                return res.data.data;
-            })
-            .then((data) => {
-                setCV(data);
             })
             .catch((err) => {
                 console.log(err);
@@ -48,7 +44,7 @@ function TaskList() {
         });
     }
 
-    const onSearch = (values) => {
+    const onSearch = debounce((values) => {
         let token = localStorage.getItem('token')
         let config = {
             method: 'get',
@@ -60,13 +56,13 @@ function TaskList() {
 
         axios.request(config)
             .then((res) => {
-                console.log(values.value);
+                console.log(values);
                 setCV(res.data.data);
             })
             .catch((error) => {
                 console.log(error);
             });
-    }
+    }, 1000);
 
     return (<>
         <h1 onClick={() => {
@@ -84,16 +80,16 @@ function TaskList() {
             <br />
 
             <div>
-                <Form
-                    onFinish={onSearch}
-                >
+                <Form>
                     <Form.Item
-                        style={{ width: 300, display: 'inline-block' }}
-                        name='value'
+                        style={{ width: 300, display: 'inline-block', color: 'black' }}
+                        validateDebounce={2000}
+                        label="Tìm kiếm"
                     >
-                        <Input></Input>
+                        <Input onChange={(e) => {
+                            onSearch({ value: e.target.value });
+                        }}></Input>
                     </Form.Item>
-                    <Button type='primary' danger htmlType='submit'>Tìm kiếm</Button>
                 </Form>
             </div>
 
@@ -101,7 +97,7 @@ function TaskList() {
             <List
                 itemLayout="horizontal"
                 dataSource={CV}
-                renderItem={(item, index) => (
+                renderItem={(item) => (
                     <List.Item>
                         <List.Item.Meta
                             avatar={<Avatar src={'https://backoffice.nodemy.vn' + item?.attributes?.image?.data?.attributes.url} />}
@@ -129,7 +125,7 @@ function TaskList() {
                 )
                 }
             />
-        </div>
+        </div >
     </>)
 }
 

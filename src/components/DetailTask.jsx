@@ -1,7 +1,12 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Navigate, useParams, useNavigate } from "react-router-dom"
-import { Button, Form, Input } from 'antd';
+import {
+    Button,
+    Form,
+    Input,
+    Switch,
+} from 'antd';
 
 export default function DetailTask() {
 
@@ -12,6 +17,7 @@ export default function DetailTask() {
 
 
     const onFinish = (values) => {
+        console.log(values);
         let token = localStorage.getItem('token')
         axios({
             url: `https://backoffice.nodemy.vn/api/tasks/${params.id}?populate=*`,
@@ -47,13 +53,10 @@ export default function DetailTask() {
     return (<>
         <div className="detail-task">
             <h1>Id: {task?.id}</h1 >
+            <h1>Complete: {`${task?.attributes?.complete}`}</h1 >
             <Form
                 form={form}
                 onFinish={onFinish}
-                initialValues={{
-                    title: task?.attributes?.title,
-                    complete: task?.attributes?.complete || false
-                }}
             >
                 <Form.Item
                     name='title'
@@ -61,13 +64,10 @@ export default function DetailTask() {
                 >
                     <Input></Input>
                 </Form.Item>
-                <Form.Item
-                    name='complete'
-                    label='complete'
-                >
-                    <Input></Input>
+                <Form.Item name='complete' valuePropName='defaultChecked'>
+                    <Switch checkedChildren="True" unCheckedChildren="False" defaultChecked={`${task?.attributes?.complete}`} />
                 </Form.Item>
-                <Button type='primary' htmlType='submit' style={{marginRight: 10}}>Sửa Task</Button>
+                <Button type='primary' htmlType='submit' style={{ marginRight: 10 }}>Sửa Task</Button>
                 <Button onClick={() => {
                     navigate('/tasklist')
                 }}>Quay lại</Button>

@@ -46,7 +46,7 @@ function Login() {
     return (<>
      <h1 onClick={() => {
             navigate('/Project_ToDoList')
-        }} role="button" style={{ fontFamily: 'sans-serif' }}>DEMO CRUD</h1>
+        }} style={{ fontFamily: 'sans-serif' }}>DEMO CRUD</h1>
         <div className='login'>
             <div className='login-form'>
                 <Form

@@ -5,10 +5,12 @@ import {
 } from 'antd'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 export default function AddTask() {
     const navigate = useNavigate()
     let token = localStorage.getItem('token')
+    const [isSubmitting, setIsSubmitting] = useState(false);
     function onFinish(values) {
         axios({
             url: 'https://backoffice.nodemy.vn/api/tasks',
@@ -25,6 +27,7 @@ export default function AddTask() {
         })
             .then((result) => {
                 console.log('Tao moi thanh cong');
+                setIsSubmitting(true);
             }).catch((err) => {
                 console.log('Tao moi that bai');
             })
@@ -41,7 +44,7 @@ export default function AddTask() {
                 >
                     <Input></Input>
                 </Form.Item>
-                <Button type='primary' htmlType='submit'>Thêm Task</Button>
+                <Button type='primary' htmlType='submit' disabled={isSubmitting}>Thêm Task</Button> {/* disable submit button based on state variable */}
                 <Button onClick={() => {
                     navigate('/tasklist')
                 }}>Quay lại</Button>
