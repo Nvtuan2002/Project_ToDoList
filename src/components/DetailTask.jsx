@@ -6,6 +6,7 @@ import {
     Form,
     Input,
     Switch,
+    message
 } from 'antd';
 
 export default function DetailTask() {
@@ -13,7 +14,21 @@ export default function DetailTask() {
     const params = useParams()
     const [task, setTask] = useState()
     const [form] = Form.useForm();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [messageApi, contextHolder] = message.useMessage();
+
+    const success = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'Cập nhật thành công',
+        });
+    };
+    const error = () => {
+        messageApi.open({
+            type: 'error',
+            content: 'Cập nhật thất bại',
+        });
+    };
 
 
     const onFinish = (values) => {
@@ -33,8 +48,10 @@ export default function DetailTask() {
                 }
             }
         }).then((res) => {
+            success()
             console.log('Update thanh cong');
         }).catch(() => {
+            error()
             console.log('Update that bai');
         })
     };
@@ -51,6 +68,7 @@ export default function DetailTask() {
     }, [])
 
     return (<>
+        {contextHolder}
         <div className="detail-task">
             <h1>Id: {task?.id}</h1 >
             <h1>Complete: {`${task?.attributes?.complete}`}</h1 >

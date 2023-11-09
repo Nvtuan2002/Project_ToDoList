@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { Avatar, List, Input, Button, Dropdown, Form } from 'antd';
+import { Avatar, List, Input, Button, Dropdown, Form, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import debounce from 'lodash/debounce';
@@ -9,6 +9,22 @@ import debounce from 'lodash/debounce';
 function TaskList() {
     const [CV, setCV] = useState([])
     const navigate = useNavigate()
+    const [messageApi, contextHolder] = message.useMessage();
+
+
+    const success = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'Xóa thành công',
+        });
+    };
+    const error = () => {
+        messageApi.open({
+            type: 'error',
+            content: 'Xóa thất bại',
+        });
+    };
+
 
     useEffect(() => {
         axios({
@@ -38,35 +54,51 @@ function TaskList() {
             })
             return newList
         }).then((data) => {
+            success()
             setCV(data)
         }).catch((err) => {
+            error()
             console.log('Xoa that bai');
         });
     }
-
     const onSearch = debounce((values) => {
         let token = localStorage.getItem('token')
-        let config = {
-            method: 'get',
-            url: `https://backoffice.nodemy.vn/api/tasks?pagination[page]=1&pagination[pageSize]=10&filters[$or][0][id][$contains]=${values.value}&filters[$or][1][title][$contains]=${values.value}`,
-            headers: {
-                'Authorization': 'Bearer ' + token,
-            }
-        };
-
-        axios.request(config)
-            .then((res) => {
-                console.log(values);
-                setCV(res.data.data);
+        if (!values.value) {
+            axios({
+                url: 'https://backoffice.nodemy.vn/api/tasks?populate=*',
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
             })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, 1000);
+                .then((res) => {
+                    setCV(res.data.data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } else {
+            let config = {
+                method: 'get',
+                url: `https://backoffice.nodemy.vn/api/tasks?pagination[page]=1&pagination[pageSize]=10&filters[$or][0][id][$contains]=${values.value}&filters[$or][1][title][$contains]=${values.value}`,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            };
 
+            axios.request(config)
+                .then((res) => {
+                    setCV(res.data.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, 1000);
     return (<>
+        {contextHolder}
         <h1 onClick={() => {
-            navigate('/Project_ToDoList')
+            navigate('/')
         }} role="button" style={{ fontFamily: 'sans-serif' }}>DEMO CRUD</h1>
         <div className="tasklist">
             <Button className="logout" type="primary" onClick={() => {
@@ -86,7 +118,7 @@ function TaskList() {
                         validateDebounce={2000}
                         label="Tìm kiếm"
                     >
-                        <Input onChange={(e) => {
+                        <Input placeholder="nhập id hoặc tittle" style={{ color: 'black' }} onChange={(e) => {
                             onSearch({ value: e.target.value });
                         }}></Input>
                     </Form.Item>
